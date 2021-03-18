@@ -8,15 +8,15 @@ import { AuthService } from 'src/shared/services/auth.service';
 import { JwtStrategy } from 'src/shared/strategies/jwt-strategy';
 import { CommandHandlers } from './commands';
 import { CustomerController } from './controllers/customer.controller';
-import { EventHandlers } from './events/handlers';
+import { EventHandlers } from './events';
+
 import { QueryHandlers } from './queries';
 import { AccountRepository } from './repositories/account.repository';
 import { CustomerRepository } from './repositories/customer.repository';
 import { CustomerSchema } from './schemas/customer.schema';
 import { UserSchema } from './schemas/user.schema';
-import { AccountService } from './services/account/account.service';
-import { CustomerCommandService } from './services/customer/customer-command.service';
-import { CustomerQueryService } from './services/customer/customer-query.service';
+import { AccountService } from './services/account.service';
+import { CustomerService } from './services/customer.service';
 
 @Module({
   imports: [
@@ -25,6 +25,7 @@ import { CustomerQueryService } from './services/customer/customer-query.service
     MongooseModule.forRoot('mongodb://localhost/loto-nest', {
       useCreateIndex: true,
       useNewUrlParser: true,
+      useFindAndModify: false,
     }),
     MongooseModule.forFeature([
       { name: 'Customer', schema: CustomerSchema },
@@ -42,8 +43,7 @@ import { CustomerQueryService } from './services/customer/customer-query.service
   providers: [
     AccountService,
     AccountRepository,
-    CustomerQueryService,
-    CustomerCommandService,
+    CustomerService,
     CustomerRepository,
     AuthService,
     JwtStrategy,

@@ -15,12 +15,21 @@ export class CreateAccountHandler
   ) {}
   async execute(command: CreateAccountCommand): Promise<User> {
     console.log('CommandHandler: Funcao conexao com repository iniciada...');
-    let user = await this.repository.findbyEmail(command.user.email);
+    let user = await this.repository.findbyEmail(command.email);
     if (!user) {
-      command.user.password = Md5.init(
-        `${command.user.password}${environment.security.salt_key}`,
+      command.password = Md5.init(
+        `${command.password}${environment.security.salt_key}`,
       );
-      const res = await this.repository.create(command.user);
+      const res = await this.repository.create(
+        new User(
+          null,
+          command.username,
+          command.email,
+          command.roles,
+          command.password,
+          true,
+        ),
+      );
 
       user = this.publisher.mergeObjectContext(
         new User(

@@ -13,13 +13,21 @@ export class CreateCustomerHandler
     private readonly publisher: EventPublisher,
   ) {}
   async execute(command: CreateCustomerCommand): Promise<Customer> {
-    console.log('CommandHandler: Funcao conexao com repository iniciada...');
-    let customer = await this.repository.findByDocument(
-      command.customer.document,
-    );
+    let customer = await this.repository.findByDocument(command.document);
     if (!customer) {
       customer = this.publisher.mergeObjectContext(
-        await this.repository.create(command.customer),
+        await this.repository.create(
+          new Customer(
+            command.name,
+            command.document,
+            command.email,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ),
+        ),
       );
       //customer.create();
 

@@ -1,4 +1,10 @@
-import { Customer } from '../../models/customer.model';
+import { User } from '../../models/user.model';
+
 export class CreateCustomerCommand {
-  constructor(public customer: Customer) {}
+  constructor(
+    public name: string,
+    public email: string,
+    public document: string,
+    public user: User,
+  ) {}
 }

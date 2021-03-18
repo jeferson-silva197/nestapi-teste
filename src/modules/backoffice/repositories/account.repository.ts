@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Md5 } from 'md5-typescript';
 import { Model } from 'mongoose';
+import { environment } from 'src/shared/common/enviropnment';
+import { Customer } from '../models/customer.model';
 import { User } from '../models/user.model';
 
 @Injectable()
 export class AccountRepository {
-  constructor(@InjectModel('User') private readonly userModel: Model<any>) {}
+  constructor(
+    @InjectModel('User') private readonly userModel: Model<any>,
+    @InjectModel('Customer') private readonly customerModel: Model<any>,
+  ) {}
 
   async create(data: User): Promise<User> {
     const user = new this.userModel(data);
@@ -21,7 +27,7 @@ export class AccountRepository {
     return await this.userModel.findOneAndUpdate({ username }, data);
   }
 
-  /* async authenticate(username: string, password: string): Promise<Customer> {
+  async authenticate(username: string, password: string): Promise<Customer> {
     const customer = await this.customerModel
       .findOne({
         document: username,
@@ -35,5 +41,5 @@ export class AccountRepository {
     } else {
       return null;
     }
-  }*/
+  }
 }

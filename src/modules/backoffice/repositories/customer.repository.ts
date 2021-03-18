@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UpdateCustomerDto } from '../dtos/customer/update-customer.dto';
+import { UpdateCustomerCommand } from '../commands/customer/update-customer.command';
 import { QueryDto } from '../dtos/query/query.dto';
 
 import { Customer } from '../models/customer.model';
@@ -15,8 +15,9 @@ export class CustomerRepository {
     return await customer.save();
   }
 
-  async update(document: string, data: UpdateCustomerDto): Promise<Customer> {
-    return await this.model.findOneAndUpdate({ document }, data);
+  async update(data: UpdateCustomerCommand): Promise<Customer> {
+    console.log(data);
+    return await this.model.findOneAndUpdate({ document: data.document }, data);
   }
 
   async delete(document: string): Promise<Customer> {

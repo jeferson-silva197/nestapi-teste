@@ -1,5 +1,8 @@
-import { User } from '../../models/user.model';
-
 export class CreateAccountCommand {
-  constructor(public readonly user: User) {}
+  constructor(
+    public username: string,
+    public email: string,
+    public roles: string[],
+    public password: string,
+  ) {}
 }
