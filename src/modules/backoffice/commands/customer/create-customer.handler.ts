@@ -25,7 +25,7 @@ export class CreateCustomerHandler
             null,
             null,
             null,
-            null,
+            command.user,
           ),
         ),
       );

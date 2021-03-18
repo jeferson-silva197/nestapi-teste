@@ -16,7 +16,6 @@ export class CustomerRepository {
   }
 
   async update(data: UpdateCustomerCommand): Promise<Customer> {
-    console.log(data);
     return await this.model.findOneAndUpdate({ document: data.document }, data);
   }
 

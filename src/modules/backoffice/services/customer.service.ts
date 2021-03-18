@@ -27,7 +27,9 @@ export class CustomerService {
     }
     //Iniciando comandos de cadastro dos usuarios
     const account = await this.commandBus.execute(createAccountCommand);
+
     createCustomerCommand.user = account;
+
     await this.commandBus.execute(createCustomerCommand);
   }
 

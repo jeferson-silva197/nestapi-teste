@@ -16,12 +16,6 @@ export const UserSchema = new mongoose.Schema(
       trim: true,
     },
 
-    email: {
-      type: String,
-      isRequired: true,
-      trim: true,
-      index: true,
-    },
     roles: [
       {
         type: String,

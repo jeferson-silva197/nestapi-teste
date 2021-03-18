@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Md5 } from 'md5-typescript';
 import { Model } from 'mongoose';
-import { environment } from 'src/shared/common/enviropnment';
 import { Customer } from '../models/customer.model';
 import { User } from '../models/user.model';
 
@@ -35,8 +33,7 @@ export class AccountRepository {
       .populate('user')
       .exec();
 
-    const pass = Md5.init(`${password}${environment.security.salt_key}`);
-    if (pass.toString() == customer.user.password.toString()) {
+    if (password.toString() == customer.user.password.toString()) {
       return customer;
     } else {
       return null;

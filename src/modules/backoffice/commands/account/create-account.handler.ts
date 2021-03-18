@@ -21,25 +21,11 @@ export class CreateAccountHandler
         `${command.password}${environment.security.salt_key}`,
       );
       const res = await this.repository.create(
-        new User(
-          null,
-          command.username,
-          command.email,
-          command.roles,
-          command.password,
-          true,
-        ),
+        new User(null, command.username, command.roles, command.password, true),
       );
 
       user = this.publisher.mergeObjectContext(
-        new User(
-          res.id,
-          res.username,
-          res.email,
-          res.roles,
-          res.password,
-          res.active,
-        ),
+        new User(res.id, res.username, res.roles, res.password, res.active),
       );
       user.create();
       return res;

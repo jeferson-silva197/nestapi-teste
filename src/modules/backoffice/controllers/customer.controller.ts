@@ -8,9 +8,12 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ResultDto } from 'src/shared/dtos/result.dto';
+import { JwtAuthGuard } from 'src/shared/guards/auth.guard';
+import { RoleInterceptor } from 'src/shared/interceptors/role.interceptor';
 import { ValidatorInterceptor } from 'src/shared/interceptors/validator.interceptor';
 import { CreateAccountCommand } from '../commands/account/create-account.command';
 import { CreateCustomerCommand } from '../commands/customer/create-customer.command';
@@ -35,7 +38,7 @@ export class CustomerController {
   async post(@Body() model: CreateCustomerDto): Promise<ResultDto> {
     try {
       const createAccountCommand = new CreateAccountCommand(
-        model.username,
+        model.document,
         model.email,
         ['user'],
         model.password,
@@ -66,6 +69,8 @@ export class CustomerController {
   }
 
   @Get(':document')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(new RoleInterceptor(['user']))
   async getByDocument(@Param('document') document: string): Promise<ResultDto> {
     try {
       const response = await this.customerService.findbyDocument(
@@ -81,6 +86,7 @@ export class CustomerController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async getAll(): Promise<ResultDto> {
     const res = await this.customerService.findAll(
       new FindAllDocumentsCommand(),
@@ -117,6 +123,8 @@ export class CustomerController {
     }
   }
   @Delete(':document')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(new RoleInterceptor(['admin']))
   async delete(@Param('document') document: string): Promise<ResultDto> {
     try {
       const command = new DeleteCustomerCommand(document);

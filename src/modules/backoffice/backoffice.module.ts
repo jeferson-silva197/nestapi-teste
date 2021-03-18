@@ -7,6 +7,7 @@ import { environment } from 'src/shared/common/enviropnment';
 import { AuthService } from 'src/shared/services/auth.service';
 import { JwtStrategy } from 'src/shared/strategies/jwt-strategy';
 import { CommandHandlers } from './commands';
+import { AccountController } from './controllers/account.controller';
 import { CustomerController } from './controllers/customer.controller';
 import { EventHandlers } from './events';
 
@@ -39,10 +40,11 @@ import { CustomerService } from './services/customer.service';
       signOptions: { expiresIn: 3600 },
     }),
   ],
-  controllers: [CustomerController],
+  controllers: [AccountController, CustomerController],
   providers: [
     AccountService,
     AccountRepository,
+    AccountController,
     CustomerService,
     CustomerRepository,
     AuthService,
