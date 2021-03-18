@@ -1,4 +1,4 @@
-import { CommandHandler, ICommand, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { AuthService } from 'src/shared/services/auth.service';
 import { RefreshTokenCommand } from './refresh-token.command';
 

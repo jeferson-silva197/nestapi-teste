@@ -22,7 +22,7 @@ export class AuthenticateHandler
       encryptedPass,
     );
     if (!customer) {
-      return;
+      throw new Error('Usuário não existe!');
     }
     if (!customer.user.active) {
       throw new Error('Usuário inativo!');

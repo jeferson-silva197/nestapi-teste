@@ -7,7 +7,6 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { Guid } from 'guid-typescript';
 import { ResultDto } from 'src/shared/dtos/result.dto';
 import { JwtAuthGuard } from 'src/shared/guards/auth.guard';
 import { AuthenticateCommand } from '../commands/account/authenticate.command';
@@ -25,11 +24,18 @@ export class AccountController {
 
   @Post('authenticate')
   async authenticate(@Body() model: AuthenticateDto): Promise<ResultDto> {
-    const token = await this.accountService.authenticate(
-      new AuthenticateCommand(model.username, model.password),
-    );
+    try {
+      const token = await this.accountService.authenticate(
+        new AuthenticateCommand(model.username, model.password),
+      );
 
-    return new ResultDto(null, true, token, null);
+      return new ResultDto(null, true, token, null);
+    } catch (error) {
+      throw new HttpException(
+        new ResultDto('Não foi possível autenticar!', false, null, error),
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @Post('reset-password')
