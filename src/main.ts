@@ -6,7 +6,7 @@ import { environment } from './shared/common/enviropnment';
 import { CustomLogger } from './shared/services/custom-logger.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    // logger: new CustomLogger(),
+    logger: new CustomLogger(),
   });
   app.use(compression()); //Compressão de dados response mais rápida
 
