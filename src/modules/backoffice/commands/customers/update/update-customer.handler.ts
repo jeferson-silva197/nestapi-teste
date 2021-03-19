@@ -1,5 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { CustomerRepository } from '../../repositories/customer.repository';
+import { CustomerRepository } from 'src/modules/backoffice/repositories/customer.repository';
+
 import { UpdateCustomerCommand } from './update-customer.command';
 
 @CommandHandler(UpdateCustomerCommand)

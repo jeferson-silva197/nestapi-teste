@@ -1,5 +1,6 @@
 import {
   Body,
+  CacheInterceptor,
   Controller,
   Delete,
   Get,
@@ -15,17 +16,18 @@ import { ResultDto } from 'src/shared/dtos/result.dto';
 import { JwtAuthGuard } from 'src/shared/guards/auth.guard';
 import { RoleInterceptor } from 'src/shared/interceptors/role.interceptor';
 import { ValidatorInterceptor } from 'src/shared/interceptors/validator.interceptor';
-import { CreateAccountCommand } from '../commands/account/create-account.command';
-import { CreateCustomerCommand } from '../commands/customer/create-customer.command';
-import { DeleteCustomerCommand } from '../commands/customer/delete-customer.command';
-import { UpdateCustomerCommand } from '../commands/customer/update-customer.command';
+import { CreateAccountCommand } from '../commands/accounts/create-account.command';
+import { CreateCustomerCommand } from '../commands/customers/create/create-customer.command';
+import { DeleteCustomerCommand } from '../commands/customers/delete/delete-customer.command';
+import { UpdateCustomerCommand } from '../commands/customers/update/update-customer.command';
+
 import { CreateCustomerContract } from '../contracts/customer/create-customer.contract';
 import { UpdateCustomerContract } from '../contracts/customer/update-customer.contract';
 import { CreateCustomerDto } from '../dtos/customer/create-customer.dto';
 import { UpdateCustomerDto } from '../dtos/customer/update-customer.dto';
 import { FindByDocumentQuery } from '../queries/customer/find-by-document.query';
 
-import { FindAllDocumentsCommand } from '../queries/customer/get-all.query';
+import { FindAllDocumentsQuery } from '../queries/customer/get-all.query';
 
 import { CustomerService } from '../services/customer.service';
 
@@ -87,10 +89,9 @@ export class CustomerController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(CacheInterceptor)
   async getAll(): Promise<ResultDto> {
-    const res = await this.customerService.findAll(
-      new FindAllDocumentsCommand(),
-    );
+    const res = await this.customerService.findAll(new FindAllDocumentsQuery());
     return new ResultDto('Clientes obtidos com sucesso!', true, res, null);
   }
 

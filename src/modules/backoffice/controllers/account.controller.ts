@@ -9,10 +9,10 @@ import {
 } from '@nestjs/common';
 import { ResultDto } from 'src/shared/dtos/result.dto';
 import { JwtAuthGuard } from 'src/shared/guards/auth.guard';
-import { AuthenticateCommand } from '../commands/account/authenticate.command';
-import { ChangePasswordCommand } from '../commands/account/change-password.command';
-import { RefreshTokenCommand } from '../commands/account/refresh-token.command';
-import { ResetPasswordCommand } from '../commands/account/reset-password.command';
+import { AuthenticateCommand } from '../commands/accounts/authenticate.command';
+import { ChangePasswordCommand } from '../commands/accounts/change-password.command';
+import { RefreshTokenCommand } from '../commands/accounts/refresh-token.command';
+import { ResetPasswordCommand } from '../commands/accounts/reset-password.command';
 import { AuthenticateDto } from '../dtos/account/authenticate.dto';
 import { ChangePasswordDto } from '../dtos/account/change-password.dto';
 import { ResetPasswordDto } from '../dtos/account/reset-password.dto';
@@ -92,20 +92,24 @@ export class AccountController {
   @Post('refresh')
   @UseGuards(JwtAuthGuard)
   async refreshToken(@Req() request: any): Promise<ResultDto> {
-    /*verificar no bd os dados */
-    const command = new RefreshTokenCommand(
-      request.user.document,
-      request.user.email,
-      request.user.roles,
-    );
-
-    const token = await this.accountService.refreshToken(command);
-
-    return new ResultDto(
-      'Token de acesso atualizado com sucesso!',
-      false,
-      token,
-      null,
-    );
+    try {
+      const command = new RefreshTokenCommand(
+        request.user.document,
+        request.user.email,
+        request.user.roles,
+      );
+      const token = await this.accountService.refreshToken(command);
+      return new ResultDto(
+        'Token de acesso atualizado com sucesso!',
+        false,
+        token,
+        null,
+      );
+    } catch (error) {
+      throw new HttpException(
+        new ResultDto('Não foi possível atualizar o token!', false, null, null),
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }

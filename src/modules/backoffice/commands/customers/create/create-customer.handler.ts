@@ -21,7 +21,7 @@ export class CreateCustomerHandler
             command.name,
             command.document,
             command.email,
-            null,
+            [],
             null,
             null,
             null,

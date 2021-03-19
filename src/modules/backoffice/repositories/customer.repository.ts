@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UpdateCustomerCommand } from '../commands/customer/update-customer.command';
+import { UpdateCustomerCommand } from '../commands/customers/update/update-customer.command';
+
 import { QueryDto } from '../dtos/query/query.dto';
 
 import { Customer } from '../models/customer.model';

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, HttpModule, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -8,20 +8,23 @@ import { AuthService } from 'src/shared/services/auth.service';
 import { JwtStrategy } from 'src/shared/strategies/jwt-strategy';
 import { CommandHandlers } from './commands';
 import { AccountController } from './controllers/account.controller';
+import { AddressController } from './controllers/address.controller';
+import { CreditCardController } from './controllers/credit-card.controller';
 import { CustomerController } from './controllers/customer.controller';
+import { PetController } from './controllers/pet.controller';
 import { EventHandlers } from './events';
 
 import { QueryHandlers } from './queries';
-import { AccountRepository } from './repositories/account.repository';
-import { CustomerRepository } from './repositories/customer.repository';
+import { Repositories } from './repositories';
 import { CustomerSchema } from './schemas/customer.schema';
 import { UserSchema } from './schemas/user.schema';
-import { AccountService } from './services/account.service';
-import { CustomerService } from './services/customer.service';
+import { Services } from './services';
 
 @Module({
   imports: [
     CqrsModule,
+    CacheModule.register({ ttl: 600 }),
+    HttpModule,
 
     MongooseModule.forRoot('mongodb://localhost/loto-nest', {
       useCreateIndex: true,
@@ -40,17 +43,20 @@ import { CustomerService } from './services/customer.service';
       signOptions: { expiresIn: 3600 },
     }),
   ],
-  controllers: [AccountController, CustomerController],
-  providers: [
-    AccountService,
-    AccountRepository,
+  controllers: [
     AccountController,
-    CustomerService,
-    CustomerRepository,
+    AddressController,
+    CreditCardController,
+    CustomerController,
+    PetController,
+  ],
+  providers: [
     AuthService,
     JwtStrategy,
     ...CommandHandlers,
     ...EventHandlers,
+    ...Repositories,
+    ...Services,
     ...QueryHandlers,
   ],
 })

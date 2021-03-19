@@ -1,3 +1,3 @@
 import { IQuery } from '@nestjs/cqrs';
 
-export class FindAllDocumentsCommand implements IQuery {}
+export class FindAllDocumentsQuery implements IQuery {}

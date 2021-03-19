@@ -1,13 +1,13 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { CustomerRepository } from '../../repositories/customer.repository';
-import { FindAllDocumentsCommand } from './get-all.query';
+import { FindAllDocumentsQuery } from './get-all.query';
 
-@QueryHandler(FindAllDocumentsCommand)
+@QueryHandler(FindAllDocumentsQuery)
 export class FindAllDocumentsHandler
-  implements IQueryHandler<FindAllDocumentsCommand> {
+  implements IQueryHandler<FindAllDocumentsQuery> {
   constructor(private readonly repository: CustomerRepository) {}
 
-  async execute(query: FindAllDocumentsCommand) {
+  async execute(query: FindAllDocumentsQuery) {
     return await this.repository.findAll();
   }
 }

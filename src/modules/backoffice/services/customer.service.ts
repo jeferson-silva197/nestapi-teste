@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { CreateAccountCommand } from '../commands/account/create-account.command';
-import { CreateCustomerCommand } from '../commands/customer/create-customer.command';
-import { DeleteCustomerCommand } from '../commands/customer/delete-customer.command';
-import { UpdateCustomerCommand } from '../commands/customer/update-customer.command';
+import { CreateAccountCommand } from '../commands/accounts/create-account.command';
+import { CreateCustomerCommand } from '../commands/customers/create/create-customer.command';
+import { DeleteCustomerCommand } from '../commands/customers/delete/delete-customer.command';
+import { UpdateCustomerCommand } from '../commands/customers/update/update-customer.command';
+
 import { FindByDocumentQuery } from '../queries/customer/find-by-document.query';
-import { FindAllDocumentsCommand } from '../queries/customer/get-all.query';
+import { FindAllDocumentsQuery } from '../queries/customer/get-all.query';
 
 @Injectable()
 export class CustomerService {
@@ -44,7 +45,7 @@ export class CustomerService {
   async findbyDocument(getCustomerQuery: FindByDocumentQuery) {
     return await this.queryBus.execute(getCustomerQuery);
   }
-  async findAll(command: FindAllDocumentsCommand) {
+  async findAll(command: FindAllDocumentsQuery) {
     return await this.queryBus.execute(command);
   }
 }
